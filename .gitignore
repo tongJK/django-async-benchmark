@@ -11,5 +11,7 @@ build/
 .DS_Store
 k6/results*.json
 k6/summary.json
-.env
+.ai/
+.amazonq/
+.kiro/
 DjangoAsyncProject/local_settings.py
