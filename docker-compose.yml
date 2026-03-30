@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: async_benchmark
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  app-async:
+    build: .
+    command: uvicorn DjangoAsyncProject.asgi:application --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_NAME: async_benchmark
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      BENCHMARK_IO_MODE: mock
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app-sync:
+    build: .
+    command: gunicorn DjangoAsyncProject.wsgi:application --bind 0.0.0.0:8001 --workers 4
+    ports:
+      - "8001:8001"
+    environment:
+      DB_HOST: db
+      DB_NAME: async_benchmark
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      BENCHMARK_IO_MODE: mock
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

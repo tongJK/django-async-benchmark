@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3
+.env
+.venv/
+*.egg-info/
+dist/
+build/
+.idea/
+.DS_Store
+k6/results*.json
+k6/summary.json
+.env
+DjangoAsyncProject/local_settings.py

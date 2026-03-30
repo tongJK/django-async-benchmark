@@ -1,0 +1,19 @@
+[project]
+name = "django-async-benchmark"
+version = "0.1.0"
+description = "POC: Sync vs Async performance comparison in Django"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.0.3",
+    "psycopg[binary]>=3.2",
+    "httpx>=0.28",
+    "uvicorn[standard]>=0.34",
+    "gunicorn>=23.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-django",
+    "pytest-asyncio",
+]
